@@ -1,0 +1,75 @@
+{
+    "dates": {
+      "synonyms": [
+        "date",
+        "join_date",
+        "created_at",
+        "start_date",
+        "end_date",
+        "signup_date",
+        "registration_date"
+      ],
+      "regex_patterns": [
+        "\\d{2}/\\d{2}/\\d{4}",
+        "\\d{2}-\\d{2}-\\d{4}",
+        "\\d{4}/\\d{2}/\\d{2}",
+        "\\d{4}-\\d{2}-\\d{2}"
+      ],
+      "standard_format": "%Y-%m-%d"
+    },
+    "currency": {
+      "synonyms": [
+        "salary",
+      "pay",
+      "amount",
+      "cost",
+      "price",
+      "revenue",
+      "income"
+      ],
+      "regex_patterns": [
+        "[$|€|¥|₹|£]?\\d+(,\\d{3})*(\\.\\d+)?",
+        "\\d+(\\.\\d{2})?\\s?[$|€|¥|₹|£]"
+      ],
+      "standard_format": "USD"
+    },
+    "phone_numbers": {
+      "synonyms": [
+        "Phone Number",
+        "Mobile",
+        "Contact",
+        "Phone"
+      ],
+      "regex_patterns": [
+        "\\+?\\d{1,2}\\s?\\(?\\d{2,3}\\)?[-\\s]?\\d{3}[-\\s]?\\d{4}",
+        "\\d{3}[-\\s]?\\d{3}[-\\s]?\\d{4}",
+        "\\(\\d{3}\\)\\s?\\d{3}-\\d{4}"
+      ],
+      "standard_format": "+1 (555) 123-4567"
+    },
+    "percentages": {
+      "synonyms": [
+        "Percentage",
+        "Rate"
+      ],
+      "regex_patterns": [
+        "\\d+(\\.\\d+)?%",
+        "(\\d+(\\.\\d{2})?\\s?)?\\d+%"
+      ],
+      "standard_format": "{value}%"
+    },
+    "name": {
+      "synonyms": [
+        "Name",
+        "Full Name",
+        "First Name",
+        "Last Name"
+      ],
+      "regex_patterns": [
+        "[a-zA-Z]+\\s[a-zA-Z]+",
+        "[a-zA-Z]+"
+      ],
+      "standard_format": "Title Case"
+    }
+  }
+  
