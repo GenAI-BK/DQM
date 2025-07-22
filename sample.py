@@ -312,7 +312,7 @@ def handle_missing_data(df):
     # Step 5: Use sentence-transformer-based imputer for object/text columns
     df = hybrid_text_imputer(df)
 
-    st.success("✅ Missing data handled successfully.")
+    # st.success("✅ Missing data handled successfully.")
     return df
 
 
@@ -426,7 +426,7 @@ master = load_master_file()
 
 
 # Set your OpenAI API key
-os.environ['OPENAI_API_KEY'] = 'OpenAI Key'
+os.environ['OPENAI_API_KEY'] = 'OPENAI KEY'  # Replace with your actual key or use st.secrets
 
 
 
@@ -648,26 +648,35 @@ def plot_clean_anomaly_chart(profile, total_rows, title):
     st.plotly_chart(fig, use_container_width=True)
 def clean_data(df):
     result = main_dqm_pipeline(df)
-    update_clean_data(result, "Remove Junk Values")
-    df = st.session_state.clean_data
+    if isinstance(result, tuple) and isinstance(result[0], pd.DataFrame):
+        df = result[0]
     # st.dataframe(df.head())
+    else:
+        df=result
     
     
     result = handle_missing_data(df)
-    update_clean_data(result, "Handle Missing Data")
-    df = st.session_state.clean_data
+    if isinstance(result, tuple) and isinstance(result[0], pd.DataFrame):
+        df = result[0]
+    # st.dataframe(df.head())
+    else:
+        df=result
     
     
     df.drop('index', axis=1, inplace=True)
     
     result = find_duplicates_and_remove_with_count(df)
-    update_clean_data(result, "Remove Duplicates")
-    df = st.session_state.clean_data
-
+    if isinstance(result, tuple) and isinstance(result[0], pd.DataFrame):
+        df = result[0]
+    # st.dataframe(df.head())
+    else:
+        df=result
     result = auto_standardize(df, master=master)
-    update_clean_data(result, "Standardize Data")
-    df = st.session_state.clean_data
-    
+    if isinstance(result, tuple) and isinstance(result[0], pd.DataFrame):
+        df = result[0]
+    # st.dataframe(df.head())
+    else:
+        df=result
     return df
     
     
