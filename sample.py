@@ -30,7 +30,22 @@ from standardization import auto_standardize
 from irrelavent import main_dqm_pipeline
 import plotly.graph_objects as go
 ### DATA PROFILING
-
+def data_profiling(df, contamination=0.01):
+    result = {}
+    missing_values = df.isnull().sum()
+    total_missing = missing_values.sum()
+    total_duplicates = df.duplicated().sum()
+    numeric_cols = df.select_dtypes(include=[np.number])
+    outlier_count = 0
+    if not numeric_cols.empty:
+        iso = IsolationForest(contamination=contamination, random_state=42)
+        preds = iso.fit_predict(numeric_cols)
+        outlier_count = (preds == -1).sum()
+    result["missing_values_per_column"] = missing_values.to_dict()
+    result["total_missing_values"] = int(total_missing)
+    result["total_duplicate_rows"] = int(total_duplicates)
+    result["total_outlier_rows"] = int(outlier_count)
+    return result
 def check_missing_duplicates_outliers(df, contamination=0.01):
     """
     Check for missing values, duplicate rows, and number of outliers in the DataFrame.
@@ -723,7 +738,17 @@ if st.session_state.clean_data is not None:
     df_old=df.copy()
     if step_selected == "profile":
         st.subheader("Data Profiling Report")
-        
+        # st.subheader("Data Profiling Report")
+        profile = data_profiling(df)
+        st.write("**Missing Values Per Column:**")
+        st.dataframe(pd.DataFrame(profile["missing_values_per_column"].items(), columns=["Column", "Missing Count"]))
+        st.write("**Summary:**")
+        st.dataframe(pd.DataFrame([{
+            "Total Missing Values": profile["total_missing_values"],
+            "Total Duplicate Rows": profile["total_duplicate_rows"],
+            "Total Outlier Rows": profile["total_outlier_rows"]
+        }]))
+
 
     elif step_selected == "missing":
         result = handle_missing_data(df)
